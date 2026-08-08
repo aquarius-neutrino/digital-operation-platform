@@ -30,7 +30,16 @@ export const asyncRoutes: RouteRecordRaw[] = [
           title: '角色管理',
           permission: ['system:role:list']
         }
+      },
+      {
+        path: 'menu',
+        name: 'MenuManage',
+        component: () => import('@/views/system/menu/index.vue'),
+        meta: {
+          title: '菜单管理',
+          permission: ['system:menu:list']
+        }
       }
     ]
-  }
+  },
 ]

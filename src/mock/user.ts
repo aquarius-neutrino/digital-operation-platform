@@ -19,7 +19,7 @@ export default [
               nickname: '超级管理员',
               roles: ['admin'],
               // 权限标识 用于 v-permission
-              permissions: ['system:user:list', 'system:user:add', 'system:user:edit', 'system:user:delete', 'system:role:list']
+              permissions: ['system:user:list', 'system:user:add', 'system:user:edit', 'system:user:delete', 'system:role:list','system:menu:list']
             }
           }
         }
@@ -36,7 +36,7 @@ export default [
       return {
         code: 200,
         data: {
-          permissions: ['system:user:list', 'system:user:add', 'system:user:edit', 'system:user:delete', 'system:role:list'],
+          permissions: ['system:user:list', 'system:user:add', 'system:user:edit', 'system:user:delete', 'system:role:list','system:menu:list'],
           roles: ['admin']
         }
       }

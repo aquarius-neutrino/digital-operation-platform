@@ -1,5 +1,22 @@
-# Vue 3 + TypeScript + Vite
+企业数字化运营管理平台
+技术栈：Vite5 + Vue3 + TS + Pinia + Vue‑Router4 + ElementPlus + UnoCSS + Mock
+1、工程化底层骨架
+Vite5 初始化、TS 环境、路径别名、UnoCSS 集成
+vite‑mock 模拟后端接口，本地脱离后端独立调试
+Axios 请求封装：请求拦截、响应拦截、统一错误处理、token 携带
+Pinia 状态管理 + pinia 持久化，管理用户、主题全局状态
+路由体系：静态路由、路由守卫、NProgress 进度条、404 兜底
+2、鉴权 & RBAC 权限核心（简历核心考点）
+登录页面：表单校验、mock 登录、token 存取、退出登录清除状态
+Layout 主布局：侧边栏、顶部导航、标签页、KeepAlive 缓存、侧边栏收缩展开
+路由级权限：router.addRoute动态注册异步路由，递归过滤路由，侧边栏自动渲染权限菜单，刷新页面重新恢复路由
+按钮级权限：封装全局自定义指令 v‑permission，无权限自动隐藏按钮
+权限逻辑：支持单权限、多权限、超级管理员*通配
+3、业务模块
+工作台 Dashboard 基础页面
+用户管理：搜索、表格、分页、新增、编辑、删除、状态开关、表单校验、按钮权限控制
+角色管理：搜索、分页、新增编辑角色、删除、分配权限树弹窗、v‑permission 权限控制
+4、简历加分通用功能
+暗黑主题切换：CSS class 模式，Pinia 持久化，ElementPlus+UnoCSS 适配明暗主题
+Canvas 全局水印：页面铺满水印、简单防 DOM 删除，登录生成水印、退出登录销毁水印
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
-
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).

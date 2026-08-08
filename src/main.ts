@@ -8,7 +8,8 @@ import 'element-plus/dist/index.css'
 import 'uno.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import vPermission  from '@/directive/permission'
-
+// 引入Element Plus暗黑CSS变量，原生支持html.dark切换
+import 'element-plus/theme-chalk/dark/css-vars.css'
 const app = createApp(App)
 app.directive('permission', vPermission)
 const pinia = createPinia()

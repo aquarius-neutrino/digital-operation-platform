@@ -1,5 +1,5 @@
 <template>
-  <div class="tag-view flex gap-1 p-2 bg-white border-b">
+  <div class="tag-view flex gap-1 p-2 border-b">
     <el-tag
       v-for="tag in visitedViews"
       :key="tag.path"

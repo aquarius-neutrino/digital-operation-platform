@@ -13,7 +13,7 @@
           <el-button type="primary" class="w-full" @click="handleLogin">登录</el-button>
         </el-form-item>
       </el-form>
-      <div class="text-gray-500 text-sm text-center">测试账号：admin / 123456</div>
+      <div class="text-gray-500 text-sm text-center">测试账号:admin / 123456</div>
     </el-card>
   </div>
 </template>
@@ -24,9 +24,11 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import service from '@/utils/request'
 import { useUserStore } from '@/store/user'
+import { useAppStore } from '@/store/app'
 
 const router = useRouter()
 const userStore = useUserStore()
+const appStore = useAppStore()
 
 const formRef = ref()
 const form = ref({
@@ -40,6 +42,8 @@ const handleLogin = async () => {
     const { token, userInfo} = res.data
     userStore.setLoginData(token, userInfo, userInfo.permissions)
     ElMessage.success('登录成功')
+    appStore.toggleDark()
+    appStore.islogout = false
     router.push('/dashboard')
   }
 }

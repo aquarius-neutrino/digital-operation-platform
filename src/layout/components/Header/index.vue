@@ -15,6 +15,7 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu>
+          <el-dropdown-item command="profile">个人中心</el-dropdown-item>
           <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -44,6 +45,9 @@ const handleCommand = (cmd: string) => {
     appStore.toggleDark()
     removeWatermark()
     router.push('/login')
+  }
+  else if (cmd === 'profile') {
+    router.push('/profile')
   }
 }
 </script>

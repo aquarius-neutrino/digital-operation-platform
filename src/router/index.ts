@@ -24,12 +24,20 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index.vue'),
         meta: { title: '工作台', icon: 'House' }
+      },
+      // 新增个人中心路由
+      {
+        path: 'profile',
+        name: 'Profile',
+        component: () => import('@/views/profile/index.vue'),
+        meta: { title: '个人中心', hidden: true }
       }
     ]
   },
   {
     path: '/:pathMatch(.*)*',
-    redirect: '/dashboard'
+    redirect: '/dashboard',
+    meta: { hidden: true }
   }
 ]
 

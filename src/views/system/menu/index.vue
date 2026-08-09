@@ -35,9 +35,9 @@
         </el-table-column>
         <el-table-column label="操作" width="260">
           <template #default="{ row }">
-            <el-button size="small" type="primary" v-permission="'system:menu:edit'" @click="openDialog(row)">编辑</el-button>
-            <el-button size="small" type="success" v-permission="'system:menu:add'" @click="addChild(row)">新增子菜单</el-button>
-            <el-button size="small" type="danger" v-permission="'system:menu:delete'" @click="handleDelete(row)">删除</el-button>
+            <el-button size="small" type="primary" v-permission="['system:menu:edit']" @click="openDialog(row)">编辑</el-button>
+            <el-button size="small" type="success" v-permission="['system:menu:add']" @click="addChild(row)">新增子菜单</el-button>
+            <el-button size="small" type="danger" v-permission="['system:menu:delete']" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

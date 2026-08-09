@@ -40,9 +40,10 @@
         <el-table-column prop="createTime" label="创建时间" />
         <el-table-column label="操作" width="260">
           <template #default="{ row }">
-            <el-button size="small" type="primary" v-permission="'system:role:edit'" @click="openDialog(row)">编辑</el-button>
-            <el-button size="small" type="success" v-permission="'system:role:assign'" @click="openAssignDialog(row)">分配权限</el-button>
-            <el-button size="small" type="danger" v-permission="'system:role:delete'" @click="handleDelete(row)">删除</el-button>
+            <!--system:role:edit是js表达式，要用[]圈住，不然不生效-->
+            <el-button size="small" type="primary" v-permission="['system:role:edit']" @click="openDialog(row)">编辑</el-button>
+            <el-button size="small" type="success" v-permission="['system:role:assign']" @click="openAssignDialog(row)">分配权限</el-button>
+            <el-button size="small" type="danger" v-permission="['system:role:delete']" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

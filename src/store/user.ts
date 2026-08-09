@@ -49,6 +49,7 @@ export const useUserStore = defineStore('user', () => {
     permissions.value = []
     hasRoutes.value = false
     accessRoutes.value = []
+    visitedViews.value = []
     localStorage.removeItem('token')
   }
 

@@ -17,7 +17,7 @@ export function filterAsyncRoutes(routes: RouteRecordRaw[], permissions?: string
     const hasAccess = routePermission.some(item => realPerms.includes(item))
 
     if (hasAccess) {
-      const tempRoute = { ...route }
+      const tempRoute = { ...route}
       // 递归处理子路由（核心！！缺少会丢失children）
       if (tempRoute.children && tempRoute.children.length) {
         tempRoute.children = filterAsyncRoutes(tempRoute.children, permissions)

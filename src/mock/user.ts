@@ -21,6 +21,7 @@ export default [
               // 权限标识 用于 v-permission
               permissions: 
                 [
+                  'system',
                   'system:user:list', 
                   'system:user:add', 
                   'system:user:edit', 

@@ -31,13 +31,14 @@ export const constantRoutes: RouteRecordRaw[] = [
         name: 'Profile',
         component: () => import('@/views/profile/index.vue'),
         meta: { title: '个人中心', hidden: false }
-      }
+      },
+       {
+        path: '/403',
+        name: 'Page403',
+        component: () => import('@/views/error/403.vue'),
+        meta: { title: '无权限', hidden: true }
+      },
     ]
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/dashboard',
-    meta: { hidden: true }
   }
 ]
 
@@ -63,23 +64,45 @@ router.beforeEach(async (to, from, next) => {
     next('/dashboard')
     return
   }
-
+    // 根据路径递归查找原始路由元信息
+  function findRouteMeta(routes: RouteRecordRaw[], path: string): any {
+    for (const route of routes) {
+      if (route.path === path) return route.meta
+      if (route.children) {
+        const childMeta = findRouteMeta(route.children, path)
+        if (childMeta) return childMeta
+        // 处理嵌套子路由拼接路径
+        for (const child of route.children) {
+          const fullPath = `${route.path}/${child.path}`
+          if (fullPath === path) return child.meta
+        }
+      }
+    }
+    return null
+  }
   // 3. 动态路由还未加载
   if (!userStore.hasRoutes) {
     // 根据权限过滤路由
     const accessRoutes = filterAsyncRoutes(asyncRoutes, userStore.permissions)
     // 批量注册动态路由
     accessRoutes.forEach(route => {
-      router.addRoute(route)
+        router.addRoute(route)
     })
     userStore.setAccessRoutes(accessRoutes)
     userStore.hasRoutes = true
     // ⭐重点：replace:true 防止无限重定向，重新进入一次路由匹配最新路由表
     next({ ...to, replace: true })
-  } else {
-    next()
-  }
-})
+  }  
+    // 核心修改：从原始全部异步路由匹配当前访问路径的权限标识
+      const routeMeta = findRouteMeta(asyncRoutes, to.path)
+      const targetPerms: string[] = routeMeta?.permission || []
+      const userPerms: string[] = userStore.userInfo.permissions || []
+      if (targetPerms.length && !targetPerms.some(p => userPerms.includes(p))) {
+        return next('/403')
+      }
+
+      next()
+    })
 
 router.afterEach((to) => {
   NProgress.done()

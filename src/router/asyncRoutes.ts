@@ -10,7 +10,7 @@ export const asyncRoutes: RouteRecordRaw[] = [
     meta: {
       title: '系统管理',
       icon: 'Setting',
-      permission: ['system:user:list'] // 父菜单权限标识
+      permission: ['system'] // 父菜单权限标识
     },
     children: [
       {

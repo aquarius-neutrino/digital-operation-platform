@@ -12,7 +12,10 @@ import vPermission  from '@/directive/permission'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 // 引入公共组件
 import * as utils from '@/utils/common'
+//虚拟表格滚动引入
+import components from '@/components'
 const app = createApp(App)
+app.use(components)
 app.directive('permission', vPermission)
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

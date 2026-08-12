@@ -11,7 +11,7 @@
       <!-- 标签页 -->
       <TagView />
       <!-- 主内容区域 -->
-      <main class="flex-1 overflow-auto p-4 bg-gray-50 bg-white dark:bg-gray-800">
+      <main class="flex-1  p-4 bg-gray-50 bg-white dark:bg-gray-800 ">
         <router-view v-slot="{ Component ,route}">
           <keep-alive :include="appStore.cachedViews">
             <component :is="Component" :key="route.path" />

@@ -15,50 +15,43 @@
         <el-form-item>
           <el-button type="primary" @click="getUserList">搜索</el-button>
           <el-button @click="resetSearch">重置</el-button>
+          <el-button type="primary" @click="genBigData">生成10000条测试数据</el-button>
         </el-form-item>
       </el-form>
     </el-card>
 
     <!--操作按钮-->
     <el-card>
-      <div class="mb-3">
-        <!-- 新增按钮：需要 system:user:add 权限 -->
-        <el-button type="primary" v-permission="['system:user:add']" @click="openDialog()">新增用户</el-button>
-      </div>
-      <!--表格-->
-      <el-table :data="tableData" border stripe>
-        <el-table-column prop="id" label="ID" width="80" />
-        <el-table-column prop="username" label="用户名" />
-        <el-table-column prop="nickname" label="昵称" />
-        <el-table-column prop="phone" label="手机号" />
-        <el-table-column label="状态">
-          <template #default="{ row }">
-            <el-tag :type="row.status ===1 ? 'success' : 'danger'">
-              {{ row.status ===1 ? '启用':'禁用' }}
-            </el-tag>
-          </template>
-        </el-table-column>
+    <!-- 虚拟表格 -->
+    <VirtualTable
+      :source-list="bigTableData"
+      table-height="280px"
+      :row-height="54"
+      :show-pagination="true"
+      :page-info="pageInfo"
+      @page-change="refreshTable"
+    >
+      <el-table-column prop="id" label="ID" width="80" />
+      <el-table-column prop="username" label="用户名" />
+      <el-table-column prop="nickname" label="昵称" />
+      <el-table-column prop="phone" label="手机号" />
+      <el-table-column label="状态">
+        <template #default="{ row }">
+          <el-tag :type="row.status ===1 ? 'success' : 'danger'">
+            {{ row.status ===1 ? '启用':'禁用' }}
+          </el-tag>
+        </template>
+      </el-table-column>
         <el-table-column label="创建时间" >
-          <div>{{ $utils.(new Date()) }}</div>
+          <div>{{ $utils.formatDate(new Date()) }}</div>
         </el-table-column>
-        <el-table-column label="操作" width="220">
-          <template #default="{ row }">
+      <el-table-column label="操作" width="220">
+        <template #default="{ row }">
             <el-button link type="primary" v-permission="['system:user:edit']" @click="openDialog(row)">编辑</el-button>
             <el-button link type="danger" v-permission="['system:user:delete']" @click="handleDelete(row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-       <!--分页-->
-      <div class="mt-4 flex justify-end">
-        <el-pagination
-          v-model:current-page="pageInfo.pageNum"
-          v-model:page-size="pageInfo.pageSize"
-          :total="pageInfo.total"
-          :page-sizes="[10,20,50]"
-          layout="total, sizes, prev, pager, next, jumper"
-          @change="getUserList"
-        />
-      </div>
+        </template>
+      </el-table-column>
+    </VirtualTable>
     </el-card>
    
     <!--新增编辑弹窗-->
@@ -96,19 +89,56 @@ import { debounce } from '@/utils/common'
 import { throttle } from '@/utils/common'
 import { storage } from '@/utils/common'
 const { proxy } = getCurrentInstance()!
+import { formatDate } from '@/utils/common'
 const $utils = proxy.$utils
 // 搜索表单
 const searchForm = reactive({
   username: '',
   status: undefined as number | undefined
 })
-
-// 分页
+const bigTableData = ref<any[]>([])
+const loadingTip = ref('')
 const pageInfo = reactive({
   pageNum: 1,
-  pageSize: 10,
+  pageSize: 100,
   total: 0
 })
+
+const genBigData = async () => {
+  console.log('按钮点击，开始生成数据')
+  loadingTip.value = '正在生成数据...'
+  const list: any[] = []
+  const batch = 500 // 每批500条，让出主线程
+  let i = 1
+
+  while (i <= 10000) {
+    const end = Math.min(i + batch - 1, 10000)
+    for (; i <= end; i++) {
+      list.push({
+        id: i,
+        username: `user_${i}`,
+        nickname: `用户${i}`,
+        phone: `138${String(i).padStart(8, '0')}`,
+        status: i % 5 === 0 ? 0 : 1,
+        createTime: formatDate(Date.now() - i * 3600 * 1000)
+      })
+    }
+    // 让出浏览器渲染队列
+    await new Promise(resolve => setTimeout(resolve, 0))
+  }
+
+  bigTableData.value = list
+  pageInfo.total = list.length
+  loadingTip.value = `生成完成，共${list.length}条数据`
+  console.log('数据生成完毕，条数：', list.length)
+}
+
+// 分页刷新
+const refreshTable = (page: any) => {
+  console.log('分页变更', page)
+  // 真实项目此处请求接口分页数据赋值给 bigTableData
+}
+
 // 防抖300ms，停止输入后再请求接口
 const handleSearch = debounce(() => {
   console.log('发起搜索请求：', searchForm.username)
@@ -188,13 +218,13 @@ const handleDelete = (row:any) => {
 }
 //本地存储存储封装
 // 存
-storage.set('testKey', { name: 'admin' })
-// 取
-const data = storage.get<{ name: string }>('testKey')
-// 删除
-storage.remove('testKey')
-// 清空全部
-storage.clear()
-//页面加载拿数据
-getUserList()
+// storage.set('testKey', { name: 'admin' })
+// // 取
+// const data = storage.get<{ name: string }>('testKey')
+// // 删除
+// storage.remove('testKey')
+// // 清空全部
+// storage.clear()
+// //页面加载拿数据
+// getUserList()
 </script>

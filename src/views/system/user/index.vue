@@ -4,7 +4,7 @@
     <el-card class="mb-4">
       <el-form :model="searchForm" inline>
         <el-form-item label="用户名">
-          <el-input v-model="searchForm.username" placeholder="请输入用户名" clearable />
+          <el-input v-model="searchForm.username" @input="handleSearch" placeholder="请输入用户名" clearable />
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="searchForm.status" placeholder="全部" clearable>
@@ -38,7 +38,9 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" prop="createTime" />
+        <el-table-column label="创建时间" >
+          <div>{{ $utils.(new Date()) }}</div>
+        </el-table-column>
         <el-table-column label="操作" width="220">
           <template #default="{ row }">
             <el-button link type="primary" v-permission="['system:user:edit']" @click="openDialog(row)">编辑</el-button>
@@ -89,7 +91,12 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-
+import { getCurrentInstance } from 'vue'
+import { debounce } from '@/utils/common'
+import { throttle } from '@/utils/common'
+import { storage } from '@/utils/common'
+const { proxy } = getCurrentInstance()!
+const $utils = proxy.$utils
 // 搜索表单
 const searchForm = reactive({
   username: '',
@@ -102,7 +109,17 @@ const pageInfo = reactive({
   pageSize: 10,
   total: 0
 })
+// 防抖300ms，停止输入后再请求接口
+const handleSearch = debounce(() => {
+  console.log('发起搜索请求：', searchForm.username)
+  // getUserList()
+}, 1000)
+// 节流500ms，500ms内只执行一次
+const handleResize = throttle(() => {
+  console.log('窗口尺寸变化')
+}, 500)
 
+window.addEventListener('resize', handleResize)
 const tableData = ref<any[]>([])
 const dialogVisible = ref(false)
 const isEdit = ref(false)
@@ -169,7 +186,15 @@ const handleDelete = (row:any) => {
     getUserList()
   })
 }
-
+//本地存储存储封装
+// 存
+storage.set('testKey', { name: 'admin' })
+// 取
+const data = storage.get<{ name: string }>('testKey')
+// 删除
+storage.remove('testKey')
+// 清空全部
+storage.clear()
 //页面加载拿数据
 getUserList()
 </script>

@@ -51,7 +51,21 @@ export default [
       return {
         code: 200,
         data: {
-          permissions: ['system:user:list', 'system:user:add', 'system:user:edit', 'system:user:delete', 'system:role:list','system:menu:list'],
+          permissions: [
+            'system',
+                  'system:user:list', 
+                  'system:user:add', 
+                  'system:user:edit', 
+                  'system:user:delete', 
+                  'system:role:list',
+                  'system:role:delete',
+                  'system:role:add',
+                  'system:role:edit',
+                  'system:menu:list',
+                  'system:menu:delete',
+                  'system:menu:edit',
+                  'system:menu:add'
+          ],
           roles: ['admin']
         }
       }

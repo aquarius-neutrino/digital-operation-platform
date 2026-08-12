@@ -19,7 +19,9 @@ export const asyncRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/system/user/index.vue'),
         meta: {
           title: '用户管理',
-          permission: ['system:user:list']
+          permission: ['system:user:list'],
+          //路由配置开启缓存标识
+          cache:true
         }
       },
       {

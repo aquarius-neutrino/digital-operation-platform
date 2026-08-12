@@ -22,4 +22,6 @@ Layout 主布局：侧边栏、顶部导航、标签页、KeepAlive 缓存、侧
 4、简历加分通用功能
 暗黑主题切换：CSS class 模式，Pinia 持久化，ElementPlus+UnoCSS 适配明暗主题
 Canvas 全局水印：页面铺满水印、简单防 DOM 删除，登录生成水印、退出登录销毁水印
+全局通用工具封装：节流防抖、日期格式化、权限判断工具函数统一归集。
+精细化 KeepAlive 页面缓存控制
 

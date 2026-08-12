@@ -20,8 +20,12 @@
             <span>{{ userInfo.username }}</span>
           </div>
           <div class="info-item flex justify-between py-2">
+            <span class="text-gray-500">用户权限</span>
+            <span>{{ hasPerm('system:role:list')?'最高权限':'基础权限' }}</span>
+          </div>
+          <div class="info-item flex justify-between py-2">
             <span class="text-gray-500">创建时间</span>
-            <span>{{ userInfo.createTime }}</span>
+            <span>{{$utils.formatDate(new Date()) }}</span>
           </div>
         </el-card>
       </el-col>
@@ -77,11 +81,13 @@ import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, FormInstance } from 'element-plus'
 import { useUserStore } from '@/store/user'
 import { updateProfile, updatePassword } from '@/api/system/profile'
-
 const userStore = useUserStore()
+import {hasPerm} from '@/utils/common'
 const userInfo = ref(userStore.userInfo)
 const pwdRef = ref<FormInstance>()
-
+import { getCurrentInstance } from 'vue'
+const { proxy } = getCurrentInstance()!
+const $utils = proxy.$utils
 // 基础资料表单
 const baseForm = reactive({
   nickname: '',
@@ -125,6 +131,7 @@ const updatePwd = async () => {
   // 密码修改完成直接退出登录
   userStore.logout()
 }
+
 </script>
 
 <style scoped>

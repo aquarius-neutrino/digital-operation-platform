@@ -30,6 +30,7 @@
       <el-table :data="tableData" border stripe>
         <el-table-column prop="id" label="编号" width="80" />
         <el-table-column prop="roleName" label="角色名称" />
+        
         <el-table-column prop="roleKey" label="角色标识" />
         <el-table-column prop="sort" label="排序" width="80" />
         <el-table-column label="状态" width="100">
@@ -37,7 +38,11 @@
             <el-switch v-model="row.status" :active-value="1" :inactive-value="0" @change="handleStatusChange(row)" />
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" />
+        <el-table-column label="创建时间">
+            <template #default="{ row }">
+              {{ formatDate(row.createTime) }}
+            </template>
+        </el-table-column>
         <el-table-column label="操作" width="260">
           <template #default="{ row }">
             <!--system:role:edit是js表达式，要用[]圈住，不然不生效-->
@@ -106,7 +111,7 @@ import { ref, reactive } from 'vue'
 import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { getRolePage, addRole, updateRole, delRole, assignPerm } from '@/api/system/role'
-
+import { formatDate } from '@/utils/common'
 const formRef = ref<FormInstance>()
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const dialogVisible = ref(false)

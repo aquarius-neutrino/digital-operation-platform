@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import { useUserStore } from '@/store/user'
+import { useAppStore } from '@/store/app'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { asyncRoutes } from './asyncRoutes'
@@ -103,12 +104,15 @@ router.beforeEach(async (to, from, next) => {
 
       next()
     })
-
+// 路由后置钩子自动缓存页面
 router.afterEach((to) => {
   NProgress.done()
   const userStore = useUserStore()
+  const appStore = useAppStore()
   if(to.meta.title && !to.meta.hidden){ 
     userStore.addVisitedView(to)
+    // 标记需要缓存的页面才加入缓存列表
+    if(to.meta.cache) appStore.addCachedView(to.name as string)
   }
 })
 

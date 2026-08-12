@@ -10,8 +10,8 @@ export default [
         data:{
           total:2,
           records:[
-            { id:1, roleName:'超级管理员', roleKey:'admin', sort:1, status:1, remark:'拥有全部权限', createTime:'2026‑08‑01 10:00:00' },
-            { id:2, roleName:'普通操作员', roleKey:'operator', sort:2, status:1, remark:'基础操作权限', createTime:'2026‑08‑02 11:20:00' }
+            { id:1, roleName:'超级管理员', roleKey:'admin', sort:1, status:1, remark:'拥有全部权限', createTime:'2026-08-01 10:00:00' },
+            { id:2, roleName:'普通操作员', roleKey:'operator', sort:2, status:1, remark:'基础操作权限', createTime:'2026-08-02 11:20:00' }
           ]
         }
       }

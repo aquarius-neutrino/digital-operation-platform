@@ -15,6 +15,9 @@
         <el-form-item>
           <el-button type="primary" @click="getRoleList">搜索</el-button>
           <el-button @click="resetQuery">重置</el-button>
+          <el-card header="大文件分片上传">
+            <ChunkUpload />
+          </el-card>
         </el-form-item>
       </el-form>
     </el-card>
@@ -112,6 +115,7 @@ import { ElMessage, ElMessageBox, ElTree } from 'element-plus'
 import type { FormInstance } from 'element-plus'
 import { getRolePage, addRole, updateRole, delRole, assignPerm } from '@/api/system/role'
 import { formatDate } from '@/utils/common'
+import ChunkUpload from '@/components/ChunkUpload/index.vue'
 const formRef = ref<FormInstance>()
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const dialogVisible = ref(false)

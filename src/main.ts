@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
-import ElementPlus from 'element-plus'
+import ElementPlus,{ ElMessage } from 'element-plus'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import 'element-plus/dist/index.css'
 import 'uno.css'
@@ -25,7 +25,23 @@ app.config.globalProperties.$utils = utils
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
+// 全局Vue组件错误捕获
+app.config.errorHandler = (err, instance, info) => {
+  console.error('Vue全局异常捕获:', err, instance, info)
+  ElMessage.error('页面渲染发生异常，请刷新页面重试')
+}
 
+// 全局原生JS错误、资源加载错误捕获
+window.onerror = function(message, source, lineno, colno, error) {
+  console.error('全局JS错误:', message, source, lineno)
+  return true
+}
+
+// 异步Promise未捕获错误捕获（接口异步报错兜底）
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('异步Promise未捕获异常:', event.reason)
+  event.preventDefault()
+})
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)

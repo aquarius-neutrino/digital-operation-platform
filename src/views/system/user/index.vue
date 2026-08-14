@@ -90,6 +90,9 @@ import { throttle } from '@/utils/common'
 import { storage } from '@/utils/common'
 const { proxy } = getCurrentInstance()!
 import { formatDate } from '@/utils/common'
+import { useCancelRequest } from '@/hooks/useCancelRequest'
+// 页面销毁自动取消所有请求
+useCancelRequest()
 const $utils = proxy.$utils
 // 搜索表单
 const searchForm = reactive({

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-
+import { cancelAllRequest } from '@/utils/request'
+import { removeWatermark } from '@/utils/watermark'
 export const useUserStore = defineStore('user', () => {
   const token = ref('')
   const userInfo = ref<any>({})
@@ -44,6 +45,10 @@ export const useUserStore = defineStore('user', () => {
 
   // 退出登录
   const logout = () => {
+    // 终止所有网络请求
+    cancelAllRequest()
+    // 销毁水印
+    removeWatermark()
     token.value = ''
     userInfo.value = {}
     permissions.value = []
